@@ -17,17 +17,17 @@ class VendingMachine:
     # nickel: ~5g
     # dime: ~2.27g
     # quarter: ~5.67g
-    coin_radiuses = {
+    COIN_RADIUSES = {
         'nickel': 10.0,
         'dime': 9.0,
         'quarter': 12.0
     }
-    coin_masses = {
+    COIN_MASSES = {
         'nickel': 5.0,
         'dime': 2.27,
         'quarter': 5.67
     }
-    coin_amounts = {
+    COIN_AMOUNTS = {
         'nickel': 0.05,
         'dime': 0.10,
         'quarter': 0.25
@@ -47,7 +47,8 @@ class VendingMachine:
             raise InvalidArgumentError(('argument coin is of type {}.\nIt must be of type {}').format(type(coin),
                                        type(Coin)))
 
-        print('current amount is {0:.2f}'.format(self.get_coin_amount(coin)))
+        self.current_amount += self.get_coin_amount(coin)
+        print('current amount is {0:.2f}'.format(self.current_amount))
 
     def get_coin_amount(self, coin):
         """
@@ -58,13 +59,13 @@ class VendingMachine:
         value_from_radius = 0
         value_from_mass = 0
 
-        for coin_type, radius in VendingMachine.coin_radiuses.items():
+        for coin_type, radius in VendingMachine.COIN_RADIUSES.items():
             if coin.radius == radius:
-                value_from_radius = VendingMachine.coin_amounts[coin_type]
+                value_from_radius = VendingMachine.COIN_AMOUNTS[coin_type]
 
-        for coin_type, mass in VendingMachine.coin_masses.items():
+        for coin_type, mass in VendingMachine.COIN_MASSES.items():
             if coin.mass == mass:
-                value_from_mass = VendingMachine.coin_amounts[coin_type]
+                value_from_mass = VendingMachine.COIN_AMOUNTS[coin_type]
 
         if value_from_radius == value_from_mass:
             return value_from_radius
