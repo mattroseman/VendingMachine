@@ -4,6 +4,7 @@ from io import StringIO
 from contextlib import contextmanager
 
 from vending_machine import VendingMachine
+from vending_machine import InvalidArgumentError
 from coin import Coin
 
 
@@ -18,6 +19,9 @@ class VendingMachineTestCase(unittest.TestCase):
         coin = Coin(10, 5)
         with capture(self.vm.insert_coin, coin) as output:
             self.assertEqual('current amount is 0.05\n', output)
+
+    def test_inserting_noncoin_object_throws_proper_exception(self):
+        self.assertRaises(InvalidArgumentError, self.vm.insert_coin, 'nickel')
 
 
 @contextmanager
