@@ -33,6 +33,25 @@ class VendingMachineTestCase(unittest.TestCase):
         with capture(self.vm.insert_coin, coin) as output:
             self.assertEqual('current amount is 0.10\n', output)
 
+    def test_insert_quarter_and_print_correct_amount(self):
+        coin = Coin(VendingMachine.coin_radiuses['quarter'], VendingMachine.coin_masses['quarter'])
+        with capture(self.vm.insert_coin, coin) as output:
+            self.assertEqual('current amount is 0.25\n', output)
+
+    def test_insert_invalid_coin_and_print_zero_amount(self):
+        coin = Coin(22, 15)
+        with capture(self.vm.insert_coin, coin) as output:
+            self.assertEqual('current amount is 0.00\n', output)
+
+    def test_insert_coin_with_mismatched_radius_and_mass_and_print_zero_amount(self):
+        for coin_type, radius in VendingMachine.coin_radiuses.items():
+            for coin_type, mass in VendingMachine.coin_masses.items():
+                if coin_type == coin_type:
+                    break
+                coin = Coin(radius, mass)
+                with capture(self.vm.insert_coin, coin) as output:
+                    self.assertEqual('current amount is 0.00\n', output)
+
 
 @contextmanager
 def capture(command, *args, **kwargs):
