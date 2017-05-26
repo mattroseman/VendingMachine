@@ -1,3 +1,5 @@
+import sys
+import os
 from coin import Coin
 
 
@@ -35,6 +37,7 @@ class VendingMachine:
 
     def __init__(self):
         self.current_amount = 0
+        print('INSERT COIN')
 
     def insert_coin(self, coin):
         """
