@@ -24,9 +24,14 @@ class VendingMachineTestCase(unittest.TestCase):
         self.assertRaises(InvalidArgumentError, self.vm.insert_coin, 'nickel')
 
     def test_insert_nickel_and_print_correct_amount(self):
-        coin = Coin(Coin.coin_radiuses['nickel'], Coin.coin_masses['nickel'])
+        coin = Coin(VendingMachine.coin_radiuses['nickel'], VendingMachine.coin_masses['nickel'])
         with capture(self.vm.insert_coin, coin) as output:
             self.assertEqual('current amount is 0.05\n', output)
+
+    def test_insert_dime_and_print_correct_amount(self):
+        coin = Coin(VendingMachine.coin_radiuses['dime'], VendingMachine.coin_masses['dime'])
+        with capture(self.vm.insert_coin, coin) as output:
+            self.assertEqual('current amount is 0.10\n', output)
 
 
 @contextmanager
