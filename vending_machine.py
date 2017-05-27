@@ -37,6 +37,8 @@ class VendingMachine:
     def __init__(self):
         self.current_amount = 0
         self.display = StringIO()
+        # NOTE for now the return slot is represented as a StringIO, when in reality there is no disply
+        self.return_slot = StringIO()
         print('INSERT COIN', file=self.display)
 
     def insert_coin(self, coin):
@@ -50,7 +52,11 @@ class VendingMachine:
             raise InvalidArgumentError(('argument coin is of type {}.\nIt must be of type {}').format(type(coin),
                                        type(Coin)))
 
-        self.current_amount += self.get_coin_amount(coin)
+        coin_amount = self.get_coin_amount(coin)
+        if not coin_amount:
+            self.send_coin_to_coin_return(coin)
+        else:
+            self.current_amount += self.get_coin_amount(coin)
         print('current amount is {0:.2f}'.format(self.current_amount), file=self.display)
 
     def get_coin_amount(self, coin):
@@ -73,6 +79,14 @@ class VendingMachine:
         if value_from_radius == value_from_mass:
             return value_from_radius
         return 0
+
+    def send_coin_to_coin_return(self, coin):
+        """
+        sends this coin to the coin return
+        @param coin: a Coin instance
+        @return: nothing
+        """
+        print('invalid coin returned', file=self.return_slot)
 
 
 class InvalidArgumentError(ValueError):

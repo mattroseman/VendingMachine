@@ -10,11 +10,22 @@ coin_masses = VendingMachine.COIN_MASSES
 
 def read_machine_display(vending_machine):
     """
-    returns the last line written to stdout
+    returns the last line written to the vending machine display
     """
     display = vending_machine.display
     display.seek(0)
     output = display.read()
+    output = output.split('\n')
+    return output[-2]
+
+
+def read_return_slot(vending_machine):
+    """
+    returns the last line written to the vending machine return slot
+    """
+    slot = vending_machine.return_slot
+    slot.seek(0)
+    output = slot.read()
     output = output.split('\n')
     return output[-2]
 
@@ -72,10 +83,15 @@ class VendingMachineTestCase(unittest.TestCase):
         self.vm.insert_coin(dime)
         self.assertEqual('current amount is 0.15', read_machine_display(self.vm))
 
-    def test_no_coins_inserted_show_INSERT_COIN_shows(self):
+    def test_no_coins_inserted_INSERT_COIN_shows(self):
         # recreate the vending machine to reprint the first output
         self.vm = VendingMachine()
         self.assertEqual('INSERT COIN', read_machine_display(self.vm))
+
+    def test_invalid_coin_inserted_sent_to_return_slot(self):
+        coin = Coin(22, 15)
+        self.vm.insert_coin(coin)
+        self.assertEqual('invalid coin returned', read_return_slot(self.vm))
 
 
 if __name__ == '__main__':
