@@ -93,6 +93,11 @@ class VendingMachineTestCase(unittest.TestCase):
         self.vm.insert_coin(coin)
         self.assertRegex(read_return_slot(self.vm), 'invalid coin \(radius: \d+mm, mass: \d+g\) returned')
 
+    def test_invalid_coin_inserted_and_correct_coin_set_to_return_slot(self):
+        coin = Coin(22, 15)
+        self.vm.insert_coin(coin)
+        self.assertEqual('invalid coin (radius: 22mm, mass: 15g) returned', read_return_slot(self.vm))
+
 
 if __name__ == '__main__':
     unittest.main()

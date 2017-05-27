@@ -86,7 +86,7 @@ class VendingMachine:
         @param coin: a Coin instance
         @return: nothing
         """
-        print('invalid coin (radius: 22mm, mass 15g) returned', file=self.return_slot)
+        print('invalid coin (radius: {}mm, mass: {}g) returned'.format(coin.radius, coin.mass), file=self.return_slot)
 
 
 class InvalidArgumentError(ValueError):
