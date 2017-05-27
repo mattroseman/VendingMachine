@@ -1,5 +1,4 @@
-import sys
-import os
+from io import StringIO
 from coin import Coin
 
 
@@ -37,7 +36,8 @@ class VendingMachine:
 
     def __init__(self):
         self.current_amount = 0
-        print('INSERT COIN')
+        self.display = StringIO()
+        print('INSERT COIN', file=self.display)
 
     def insert_coin(self, coin):
         """
@@ -51,7 +51,7 @@ class VendingMachine:
                                        type(Coin)))
 
         self.current_amount += self.get_coin_amount(coin)
-        print('current amount is {0:.2f}'.format(self.current_amount))
+        print('current amount is {0:.2f}'.format(self.current_amount), file=self.display)
 
     def get_coin_amount(self, coin):
         """
