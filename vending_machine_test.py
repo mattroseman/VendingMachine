@@ -6,6 +6,9 @@ from coin import Coin
 
 coin_radiuses = VendingMachine.COIN_RADIUSES
 coin_masses = VendingMachine.COIN_MASSES
+NICKEL = Coin(coin_radiuses['nickel'], coin_masses['nickel'])
+DIME = Coin(coin_radiuses['dime'], coin_masses['dime'])
+QUARTER = Coin(coin_radiuses['quarter'], coin_masses['quarter'])
 
 
 def read_machine_display(vending_machine):
@@ -35,35 +38,32 @@ class VendingMachineTestCase(unittest.TestCase):
         self.vm = VendingMachine()
 
     def test_vending_machine_instantiation(self):
-        self.assertEqual(0, self.vm.current_amount)
+        self.assertEqual(self.vm.current_amount, 0)
 
     def test_insert_coin_and_print_an_amount(self):
         coin = Coin(10, 5)
         self.vm.insert_coin(coin)
-        self.assertEqual('current amount is 0.05', read_machine_display(self.vm))
+        self.assertRegex(read_machine_display(self.vm), 'current amount is \d+\.\d{2}')
 
-    def test_inserting_noncoin_object_throws_proper_exception(self):
+    def test_inserting_noncoin_instance_throws_proper_exception(self):
         self.assertRaises(InvalidArgumentError, self.vm.insert_coin, 'nickel')
 
     def test_insert_nickel_and_print_correct_amount(self):
-        coin = Coin(coin_radiuses['nickel'], coin_masses['nickel'])
-        self.vm.insert_coin(coin)
-        self.assertEqual('current amount is 0.05', read_machine_display(self.vm))
+        self.vm.insert_coin(NICKEL)
+        self.assertEqual(read_machine_display(self.vm), 'current amount is 0.05')
 
     def test_insert_dime_and_print_correct_amount(self):
-        coin = Coin(coin_radiuses['dime'], coin_masses['dime'])
-        self.vm.insert_coin(coin)
-        self.assertEqual('current amount is 0.10', read_machine_display(self.vm))
+        self.vm.insert_coin(DIME)
+        self.assertEqual(read_machine_display(self.vm), 'current amount is 0.10')
 
     def test_insert_quarter_and_print_correct_amount(self):
-        coin = Coin(coin_radiuses['quarter'], coin_masses['quarter'])
-        self.vm.insert_coin(coin)
-        self.assertEqual('current amount is 0.25', read_machine_display(self.vm))
+        self.vm.insert_coin(QUARTER)
+        self.assertEqual(read_machine_display(self.vm), 'current amount is 0.25')
 
     def test_insert_invalid_coin_and_print_zero_amount(self):
         coin = Coin(22, 15)
         self.vm.insert_coin(coin)
-        self.assertEqual('current amount is 0.00', read_machine_display(self.vm))
+        self.assertEqual(read_machine_display(self.vm), 'current amount is 0.00')
 
     def test_insert_coin_with_mismatched_radius_and_mass_and_print_zero_amount(self):
         for coin_type, radius in coin_radiuses.items():
@@ -71,22 +71,19 @@ class VendingMachineTestCase(unittest.TestCase):
                 if coin_type == coin_type:
                     break
                 self.vm.insert_coin(Coin(radius, mass))
-                self.assertEqual('current amount is 0.00', read_machine_display(self.vm))
+                self.assertEqual(read_machine_display(self.vm), 'current amount is 0.00')
 
     def test_insert_nickel_and_dime_and_get_correct_amount(self):
-        nickel = Coin(coin_radiuses['nickel'], coin_masses['nickel'])
-        dime = Coin(coin_radiuses['dime'], coin_masses['dime'])
+        self.vm.insert_coin(NICKEL)
+        self.assertEqual(read_machine_display(self.vm), 'current amount is 0.05')
 
-        self.vm.insert_coin(nickel)
-        self.assertEqual('current amount is 0.05', read_machine_display(self.vm))
-
-        self.vm.insert_coin(dime)
-        self.assertEqual('current amount is 0.15', read_machine_display(self.vm))
+        self.vm.insert_coin(DIME)
+        self.assertEqual(read_machine_display(self.vm), 'current amount is 0.15')
 
     def test_no_coins_inserted_INSERT_COIN_shows(self):
         # recreate the vending machine to reprint the first output
         self.vm = VendingMachine()
-        self.assertEqual('INSERT COIN', read_machine_display(self.vm))
+        self.assertEqual(read_machine_display(self.vm), 'INSERT COIN')
 
     def test_invalid_coin_inserted_and_coin_sent_to_return_slot(self):
         coin = Coin(22, 15)
@@ -96,7 +93,10 @@ class VendingMachineTestCase(unittest.TestCase):
     def test_invalid_coin_inserted_and_correct_coin_set_to_return_slot(self):
         coin = Coin(22, 15)
         self.vm.insert_coin(coin)
-        self.assertEqual('invalid coin (radius: 22mm, mass: 15g) returned', read_return_slot(self.vm))
+        self.assertEqual(read_machine_display(self.vm), 'invalid coin (radius: 22mm, mass: 15g) returned')
+        coin = Coin(0, 0)
+        self.vm.insert_coin(coin)
+        self.assertEqual(read_return_slot(self.vm), 'invalid coin (radius: 0mm, mass: 0g) returned')
 
 
 if __name__ == '__main__':
