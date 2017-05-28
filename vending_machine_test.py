@@ -33,6 +33,17 @@ def read_return_slot(vending_machine):
     return output[-2]
 
 
+def read_product_slot(vending_machine):
+    """
+    returns the last line written tot eh vending machine return slot
+    """
+    slot = vending_machine.product_slot
+    slot.seek(0)
+    output = slot.read()
+    output = output.split('\n')
+    return output[-2]
+
+
 class VendingMachineTestCase(unittest.TestCase):
     def setUp(self):
         self.vm = VendingMachine()
@@ -97,6 +108,15 @@ class VendingMachineTestCase(unittest.TestCase):
         coin = Coin(1, 1)
         self.vm.insert_coin(coin)
         self.assertEqual(read_return_slot(self.vm), 'invalid coin (radius: 1mm, mass: 1g) returned')
+
+    def test_product_is_dispensed_when_button_pressed(self):
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.press_button('A')
+        self.vm.press_button('1')
+        self.assertEqual(read_product_slot(self.vm), '1 cola product has been vended')
 
 
 if __name__ == '__main__':

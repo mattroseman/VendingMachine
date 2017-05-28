@@ -34,11 +34,23 @@ class VendingMachine:
         'quarter': 0.25
     }
 
+    PRODUCT_NUMBERS = {
+        'cola': 'A1',
+        'chips': 'A2',
+        'candy': 'A3'
+    }
+    PRODUCT_AMOUNTS = {
+        'cola': 1.00,
+        'chips': 0.50,
+        'candy': 0.65
+    }
+
     def __init__(self):
         self.current_amount = 0
         self.display = StringIO()
         # NOTE for now the return slot is represented as a StringIO, when in reality there is no disply
         self.return_slot = StringIO()
+        self.product_slot = StringIO()
         print('INSERT COIN', file=self.display)
 
     def insert_coin(self, coin):
@@ -87,6 +99,17 @@ class VendingMachine:
         @return: nothing
         """
         print('invalid coin (radius: {}mm, mass: {}g) returned'.format(coin.radius, coin.mass), file=self.return_slot)
+
+    def press_button(self, button):
+        """
+        simulates a button being pressed on the vending machine
+        @param button: a char representing a button that was pressed [A-Z,0-9]
+        @return: nothing
+        """
+        # if not isinstance(button, str) or len(button) != 1:
+        #     raise InvalidArgumentError(('argument button is of type {} and length {}.\nIt must be of type {} and of' +
+        #                                 'length 1').format(button, len(button), str))
+        print('1 cola product has been vended', file=self.product_slot)
 
 
 class InvalidArgumentError(ValueError):
