@@ -54,7 +54,7 @@ class VendingMachineTestCase(unittest.TestCase):
     def test_insert_coin_and_print_an_amount(self):
         coin = Coin(10, 5)
         self.vm.insert_coin(coin)
-        self.assertRegex(read_machine_display(self.vm), 'current amount is \d+\.\d{2}')
+        self.assertRegex(read_machine_display(self.vm), '^current amount is \d+\.\d{2}$')
 
     def test_inserting_noncoin_instance_throws_proper_exception(self):
         self.assertRaises(InvalidArgumentError, self.vm.insert_coin, 'nickel')
@@ -99,7 +99,7 @@ class VendingMachineTestCase(unittest.TestCase):
     def test_invalid_coin_inserted_and_coin_sent_to_return_slot(self):
         coin = Coin(22, 15)
         self.vm.insert_coin(coin)
-        self.assertRegex(read_return_slot(self.vm), 'invalid coin \(radius: \d+mm, mass: \d+g\) returned')
+        self.assertRegex(read_return_slot(self.vm), '^invalid coin \(radius: \d+mm, mass: \d+g\) returned$')
 
     def test_invalid_coin_inserted_and_correct_coin_sent_to_return_slot(self):
         coin = Coin(22, 15)
@@ -116,7 +116,7 @@ class VendingMachineTestCase(unittest.TestCase):
         self.vm.insert_coin(QUARTER)
         self.vm.press_button('A')
         self.vm.press_button('1')
-        self.assertEqual(read_product_slot(self.vm), '1 cola product has been vended')
+        self.assertRegex(read_product_slot(self.vm), '^\d+ \w+ products? (has|have) been vended$')
 
 
 if __name__ == '__main__':
