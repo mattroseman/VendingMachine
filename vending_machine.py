@@ -118,7 +118,10 @@ class VendingMachine:
         try:
             vended_product = self.PRODUCT_NUMBERS[''.join(self.buttons_pressed)]
         except KeyError:
-            # if the entered keys don't match a product, do nothing
+            # if two buttons have been pressed and don't match a product, clear buttons pressed
+            # and start the queue again
+            if len(self.buttons_pressed) >= 2:
+                self.buttons_pressed = []
             return
         print('1 {} product has been vended'.format(vended_product), file=self.product_slot)
         self.buttons_pressed = []

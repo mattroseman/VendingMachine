@@ -186,6 +186,21 @@ class VendingMachineTestCase(unittest.TestCase):
         self.vm.press_button('2')
         self.assertEqual(read_product_slot(self.vm), '1 chips product has been vended')
 
+    def test_product_dispensed_after_incorrect_buttons_are_pressed(self):
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.press_button('B')
+        self.vm.press_button('4')
+        self.assertEqual(read_product_slot(self.vm), '')
+
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.press_button('A')
+        self.vm.press_button('2')
+        self.assertEqual(read_product_slot(self.vm), '1 chips product has been vended')
+
 
 if __name__ == '__main__':
     unittest.main()
