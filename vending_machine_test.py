@@ -189,17 +189,37 @@ class VendingMachineTestCase(unittest.TestCase):
     def test_product_dispensed_after_incorrect_buttons_are_pressed(self):
         self.vm.insert_coin(QUARTER)
         self.vm.insert_coin(QUARTER)
-        self.vm.insert_coin(QUARTER)
-        self.vm.insert_coin(QUARTER)
+
         self.vm.press_button('B')
         self.vm.press_button('4')
         self.assertEqual(read_product_slot(self.vm), '')
 
-        self.vm.insert_coin(QUARTER)
-        self.vm.insert_coin(QUARTER)
         self.vm.press_button('A')
         self.vm.press_button('2')
         self.assertEqual(read_product_slot(self.vm), '1 chips product has been vended')
+
+    def test_product_dispensed_after_multiple_incorrect_button_combinations_are_pressed(self):
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+
+        self.vm.press_button('B')
+        self.vm.press_button('1')
+        self.assertEqual(read_product_slot(self.vm), '')
+
+        self.vm.press_button('A')
+        self.vm.press_button('5')
+        self.assertEqual(read_product_slot(self.vm), '')
+
+        self.vm.press_button('A')
+        self.vm.press_button('1')
+        self.assertEqual(read_product_slot(self.vm), '1 cola product has been vended')
+
+    def test_product_not_dispensed_if_not_enough_money_inserted(self):
+        self.vm.press_button('A')
+        self.vm.press_button('2')
+        self.assertEqual(read_product_slot(self.vm), '')
 
 
 if __name__ == '__main__':

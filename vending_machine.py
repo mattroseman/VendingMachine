@@ -110,10 +110,6 @@ class VendingMachine:
         @param button: a char representing a button that was pressed [A-Z,0-9]
         @return: nothing
         """
-        # if not isinstance(button, str) or len(button) != 1:
-        #     raise InvalidArgumentError(('argument button is of type {} and length {}.\nIt must be of type {} and of' +
-        #                                 'length 1').format(button, len(button), str))
-        # TODO queue the button presses and select the correct product
         self.buttons_pressed.append(button)
         try:
             vended_product = self.PRODUCT_NUMBERS[''.join(self.buttons_pressed)]
@@ -123,7 +119,8 @@ class VendingMachine:
             if len(self.buttons_pressed) >= 2:
                 self.buttons_pressed = []
             return
-        print('1 {} product has been vended'.format(vended_product), file=self.product_slot)
+        if self.current_amount >= self.PRODUCT_AMOUNTS[vended_product]:
+            print('1 {} product has been vended'.format(vended_product), file=self.product_slot)
         self.buttons_pressed = []
 
 
