@@ -53,7 +53,7 @@ class VendingMachine:
         self.return_slot = StringIO()
         self.product_slot = StringIO()
 
-        self.buttons_pressed = []
+        self.buttons_pressed = ""
 
         print('INSERT COIN', file=self.display)
 
@@ -110,18 +110,16 @@ class VendingMachine:
         @param button: a char representing a button that was pressed [A-Z,0-9]
         @return: nothing
         """
-        self.buttons_pressed.append(button)
-        try:
-            vended_product = self.PRODUCT_NUMBERS[''.join(self.buttons_pressed)]
-        except KeyError:
-            # if two buttons have been pressed and don't match a product, clear buttons pressed
-            # and start the queue again
-            if len(self.buttons_pressed) >= 2:
-                self.buttons_pressed = []
+        self.buttons_pressed += button
+        if len(self.buttons_pressed) == 1:
             return
-        if self.current_amount >= self.PRODUCT_AMOUNTS[vended_product]:
-            print('1 {} product has been vended'.format(vended_product), file=self.product_slot)
-        self.buttons_pressed = []
+        if self.buttons_pressed in self.PRODUCT_NUMBERS:
+            vended_product = self.PRODUCT_NUMBERS[self.buttons_pressed]
+            # if a combination of buttons have been pressed that match a certain product
+            # vend it and clear the buttons pressed queue
+            if self.current_amount >= self.PRODUCT_AMOUNTS[vended_product]:
+                print('1 {} product has been vended'.format(vended_product), file=self.product_slot)
+        self.buttons_pressed = ""
 
 
 class InvalidArgumentError(ValueError):

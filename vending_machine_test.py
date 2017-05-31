@@ -57,11 +57,11 @@ class VendingMachineTestCase(unittest.TestCase):
     def setUp(self):
         self.vm = VendingMachine()
 
-    def test_vending_machine_instantiation(self):
-        self.assertEqual(self.vm.current_amount, 0)
-
 
 class VendingMachineInsertingCoinsTestCase(VendingMachineTestCase):
+    def test_vending_machine_instantiation_starting_amount(self):
+        self.assertEqual(self.vm.current_amount, 0)
+
     def test_insert_coin_and_print_an_amount(self):
         coin = Coin(10, 5)
         self.vm.insert_coin(coin)
