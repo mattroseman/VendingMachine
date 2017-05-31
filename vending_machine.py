@@ -118,9 +118,10 @@ class VendingMachine:
         try:
             vended_product = self.PRODUCT_NUMBERS[''.join(self.buttons_pressed)]
         except KeyError:
-            # if the entered keys don't match a product do nothing
+            # if the entered keys don't match a product, do nothing
             return
         print('1 {} product has been vended'.format(vended_product), file=self.product_slot)
+        self.buttons_pressed = []
 
 
 class InvalidArgumentError(ValueError):
