@@ -60,6 +60,8 @@ class VendingMachineTestCase(unittest.TestCase):
     def test_vending_machine_instantiation(self):
         self.assertEqual(self.vm.current_amount, 0)
 
+
+class VendingMachineInsertingCoinsTestCase(VendingMachineTestCase):
     def test_insert_coin_and_print_an_amount(self):
         coin = Coin(10, 5)
         self.vm.insert_coin(coin)
@@ -118,6 +120,8 @@ class VendingMachineTestCase(unittest.TestCase):
         self.vm.insert_coin(coin)
         self.assertEqual(read_return_slot(self.vm), 'invalid coin (radius: 1mm, mass: 1g) returned')
 
+
+class VendingMachineVendingProductsTestCase(VendingMachineTestCase):
     def test_product_is_dispensed_when_button_pressed(self):
         self.vm.insert_coin(QUARTER)
         self.vm.insert_coin(QUARTER)
