@@ -134,6 +134,15 @@ class VendingMachineTestCase(unittest.TestCase):
         self.vm.press_button('2')
         self.assertEqual(read_product_slot(self.vm), '1 chips product has been vended')
 
+    def test_candy_product_is_dispensed_when_correct_buttons_are_pressed(self):
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(DIME)
+        self.vm.insert_coin(NICKEL)
+        self.vm.press_button('A')
+        self.vm.press_button('3')
+        self.assertEqual(read_product_slot(self.vm), '1 candy product has been vended')
+
 
 if __name__ == '__main__':
     unittest.main()
