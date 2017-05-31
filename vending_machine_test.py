@@ -225,6 +225,13 @@ class VendingMachineVendingProductsTestCase(VendingMachineTestCase):
         self.vm.press_button('2')
         self.assertEqual(read_product_slot(self.vm), '')
 
+    def test_display_shows_current_buttons_pressed_queue(self):
+        self.vm.press_button('A')
+        self.assertEqual(read_machine_display(self.vm), 'A')
+
+        self.vm.press_button('1')
+        self.assertEqual(read_machine_display(self.vm), 'A1')
+
 
 if __name__ == '__main__':
     unittest.main()

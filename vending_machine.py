@@ -111,6 +111,7 @@ class VendingMachine:
         @return: nothing
         """
         self.buttons_pressed += button
+        print(self.buttons_pressed, file=self.display)
         if len(self.buttons_pressed) == 1:
             return
         if self.buttons_pressed in self.PRODUCT_NUMBERS:
