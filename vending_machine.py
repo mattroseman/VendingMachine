@@ -35,9 +35,9 @@ class VendingMachine:
     }
 
     PRODUCT_NUMBERS = {
-        'cola': 'A1',
-        'chips': 'A2',
-        'candy': 'A3'
+        'A1': 'cola',
+        'A2': 'chips',
+        'A3': 'candy'
     }
     PRODUCT_AMOUNTS = {
         'cola': 1.00,
@@ -48,9 +48,13 @@ class VendingMachine:
     def __init__(self):
         self.current_amount = 0
         self.display = StringIO()
-        # NOTE for now the return slot is represented as a StringIO, when in reality there is no disply
+        # NOTE for now varius outputs of the vending machine are represented as StringIO's for testing purposes
+        # in reality these would be functions that cause physical mechanisms to trigger
         self.return_slot = StringIO()
         self.product_slot = StringIO()
+
+        self.buttons_pressed = []
+
         print('INSERT COIN', file=self.display)
 
     def insert_coin(self, coin):
@@ -109,7 +113,14 @@ class VendingMachine:
         # if not isinstance(button, str) or len(button) != 1:
         #     raise InvalidArgumentError(('argument button is of type {} and length {}.\nIt must be of type {} and of' +
         #                                 'length 1').format(button, len(button), str))
-        print('1 cola product has been vended', file=self.product_slot)
+        # TODO queue the button presses and select the correct product
+        self.buttons_pressed.append(button)
+        try:
+            vended_product = self.PRODUCT_NUMBERS[''.join(self.buttons_pressed)]
+        except KeyError:
+            # if the entered keys don't match a product do nothing
+            return
+        print('1 {} product has been vended'.format(vended_product), file=self.product_slot)
 
 
 class InvalidArgumentError(ValueError):

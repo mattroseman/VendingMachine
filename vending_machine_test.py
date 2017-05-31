@@ -118,6 +118,22 @@ class VendingMachineTestCase(unittest.TestCase):
         self.vm.press_button('1')
         self.assertRegex(read_product_slot(self.vm), '^\d+ \w+ products? (has|have) been vended$')
 
+    def test_cola_product_is_dispensed_when_correct_buttons_are_pressed(self):
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.press_button('A')
+        self.vm.press_button('1')
+        self.assertEqual(read_product_slot(self.vm), '1 cola product has been vended')
+
+    def test_chips_product_is_dispensed_when_correct_buttons_are_pressed(self):
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.press_button('A')
+        self.vm.press_button('2')
+        self.assertEqual(read_product_slot(self.vm), '1 chips product has been vended')
+
 
 if __name__ == '__main__':
     unittest.main()
