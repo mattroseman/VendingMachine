@@ -118,9 +118,12 @@ class VendingMachine:
             vended_product = self.PRODUCT_NUMBERS[self.buttons_pressed]
             # if a combination of buttons have been pressed that match a certain product
             # vend it and clear the buttons pressed queue
-            if self.current_amount >= self.PRODUCT_AMOUNTS[vended_product]:
+            product_price = self.PRODUCT_AMOUNTS[vended_product]
+            if self.current_amount >= product_price:
                 print('1 {} product has been vended'.format(vended_product), file=self.product_slot)
                 print('THANK YOU', file=self.display)
+            else:
+                print('PRICE {0:.2f}'.format(product_price), file=self.display)
         self.buttons_pressed = ""
 
 
