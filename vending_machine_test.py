@@ -19,7 +19,10 @@ def read_machine_display(vending_machine):
     display.seek(0)
     output = display.read()
     output = output.split('\n')
-    return output[-2]
+    if len(output) >= 2:
+        return output[-2]
+    else:
+        return ''
 
 
 def read_return_slot(vending_machine):
@@ -30,7 +33,10 @@ def read_return_slot(vending_machine):
     slot.seek(0)
     output = slot.read()
     output = output.split('\n')
-    return output[-2]
+    if len(output) >= 2:
+        return output[-2]
+    else:
+        return ''
 
 
 def read_product_slot(vending_machine):
@@ -41,7 +47,10 @@ def read_product_slot(vending_machine):
     slot.seek(0)
     output = slot.read()
     output = output.split('\n')
-    return output[-2]
+    if len(output) >= 2:
+        return output[-2]
+    else:
+        return ''
 
 
 class VendingMachineTestCase(unittest.TestCase):
@@ -142,6 +151,9 @@ class VendingMachineTestCase(unittest.TestCase):
         self.vm.press_button('A')
         self.vm.press_button('3')
         self.assertEqual(read_product_slot(self.vm), '1 candy product has been vended')
+
+    def test_no_product_is_dispensed_when_incomplete_button_combination_pressed(self):
+        self.assertEqual(read_product_slot(self.vm), '')
 
 
 if __name__ == '__main__':
