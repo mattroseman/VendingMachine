@@ -245,6 +245,19 @@ class VendingMachineVendingProductsTestCase(VendingMachineTestCase):
         self.vm.press_button('1')
         self.assertRegex(read_machine_display(self.vm), '^PRICE \d+\.\d{2}$')
 
+    def test_display_shows_correct_item_price_when_vending_is_attempted_with_not_enough_money(self):
+        self.vm.press_button('A')
+        self.vm.press_button('1')
+        self.assertEqual(read_machine_display(self.vm), 'PRICE 1.00')
+
+        self.vm.press_button('A')
+        self.vm.press_button('2')
+        self.assertEqual(read_machine_display(self.vm), 'PRICE 0.50')
+
+        self.vm.press_button('A')
+        self.vm.press_button('3')
+        self.assertEqual(read_machine_display(self.vm), 'PRICE 0.65')
+
 
 if __name__ == '__main__':
     unittest.main()
