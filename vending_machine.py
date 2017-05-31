@@ -120,6 +120,7 @@ class VendingMachine:
             # vend it and clear the buttons pressed queue
             if self.current_amount >= self.PRODUCT_AMOUNTS[vended_product]:
                 print('1 {} product has been vended'.format(vended_product), file=self.product_slot)
+                print('THANK YOU', file=self.display)
         self.buttons_pressed = ""
 
 

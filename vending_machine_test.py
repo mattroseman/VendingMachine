@@ -232,6 +232,15 @@ class VendingMachineVendingProductsTestCase(VendingMachineTestCase):
         self.vm.press_button('1')
         self.assertEqual(read_machine_display(self.vm), 'A1')
 
+    def test_display_shows_THANK_YOU_when_a_product_is_vended(self):
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.press_button('A')
+        self.vm.press_button('1')
+        self.assertEqual(read_machine_display(self.vm), 'THANK YOU')
+
 
 if __name__ == '__main__':
     unittest.main()
