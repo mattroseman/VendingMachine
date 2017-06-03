@@ -1,5 +1,6 @@
 from io import StringIO
 from coin import Coin
+import time
 
 
 class VendingMachine:
@@ -45,7 +46,10 @@ class VendingMachine:
         'candy': 0.65
     }
 
-    def __init__(self):
+    def __init__(self, temp_message_time=-1):
+        # if temp_message_time is -1 then it won't me reset automatically and self._reset_message must be called
+        self.temp_message_time = temp_message_time
+
         self.current_amount = 0
         self.display = StringIO()
         # NOTE for now varius outputs of the vending machine are represented as StringIO's for testing purposes
@@ -121,17 +125,33 @@ class VendingMachine:
             product_price = self.PRODUCT_AMOUNTS[vended_product]
             if self.current_amount >= product_price:
                 print('1 {} product has been vended'.format(vended_product), file=self.product_slot)
-                print('THANK YOU', file=self.display)
+                self._print_tmp_msg('THANK YOU')
             else:
-                print('PRICE {0:.2f}'.format(product_price), file=self.display)
+                self._print_tmp_msg('PRICE {0:.2f}'.format(product_price))
         self.buttons_pressed = ""
 
-    def reset_display(self):
+    def _print_tmp_msg(self, temp_message):
+        """
+        prints a temporary message to the display and then resets it after temp_message_time seconds have passed
+        @param temp_message: the number of seconds a temporary message should remain on the display
+        @return: nothing
+        """
+        print(temp_message, file=self.display)
+        # if temp_message_time is -1 then reseting display message must be done manually
+        if self.temp_message_time > -1:
+            time.sleep(self.temp_message_time)
+            self._reset_display()
+
+    def _reset_display(self):
         """
         reset_disply resets the display after some temporary message is given. The display then reads either INSERT COIN
         or current amount is x.xx.
+        @return: nothing
         """
-        print('current amount is {0:.2f}'.format(self.current_amount), file=self.display)
+        if self.current_amount:
+            print('current amount is {0:.2f}'.format(self.current_amount), file=self.display)
+        else:
+            print('INSERT COIN', file=self.display)
 
 
 class InvalidArgumentError(ValueError):
