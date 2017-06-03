@@ -125,6 +125,7 @@ class VendingMachine:
             product_price = self.PRODUCT_AMOUNTS[vended_product]
             if self.current_amount >= product_price:
                 print('1 {} product has been vended'.format(vended_product), file=self.product_slot)
+                self.current_amount = 0
                 self._print_tmp_msg('THANK YOU')
             else:
                 self._print_tmp_msg('PRICE {0:.2f}'.format(product_price))
@@ -140,9 +141,9 @@ class VendingMachine:
         # if temp_message_time is -1 then reseting display message must be done manually
         if self.temp_message_time > -1:
             time.sleep(self.temp_message_time)
-            self._reset_display()
+            self.reset_display()
 
-    def _reset_display(self):
+    def reset_display(self):
         """
         reset_disply resets the display after some temporary message is given. The display then reads either INSERT COIN
         or current amount is x.xx.

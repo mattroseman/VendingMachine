@@ -264,14 +264,28 @@ class VendingMachineVendingProductsTestCase(VendingMachineTestCase):
         self.vm.press_button('A')
         self.vm.press_button('1')
 
-        self.vm._reset_display()
+        self.assertEqual(read_machine_display(self.vm), 'PRICE 1.00')
+        self.vm.reset_display()
         self.assertEqual(read_machine_display(self.vm), 'current amount is 0.50')
 
     def test_display_shows_INSERT_COIN_after_vending_is_attempted_with_not_enough_money(self):
         self.vm.press_button('A')
         self.vm.press_button('1')
 
-        self.vm._reset_display()
+        self.assertEqual(read_machine_display(self.vm), 'PRICE 1.00')
+        self.vm.reset_display()
+        self.assertEqual(read_machine_display(self.vm), 'INSERT COIN')
+
+    def test_display_shows_INSERT_COIN_after_vending_is_successful(self):
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+
+        self.vm.press_button('A')
+        self.vm.press_button('1')
+        self.assertEqual(read_machine_display(self.vm), 'THANK YOU')
+        self.vm.reset_display()
         self.assertEqual(read_machine_display(self.vm), 'INSERT COIN')
 
 
