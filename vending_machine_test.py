@@ -307,6 +307,16 @@ class VendingMachineVendingProductsTestCase(VendingMachineTestCase):
 
 
 class VendingMachineProducingChangeTestCase(VendingMachineTestCase):
+    def test_no_change_returned_when_product_value_is_equal_to_current_amount(self):
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+
+        self.vm.press_button('A')
+        self.vm.press_button('1')
+        self.assertEqual(read_return_slot(self.vm), '')
+
     def test_change_is_produced_when_product_value_is_less_then_current_amount(self):
         self.vm.insert_coin(QUARTER)
         self.vm.insert_coin(QUARTER)
