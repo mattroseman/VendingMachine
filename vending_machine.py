@@ -125,6 +125,8 @@ class VendingMachine:
             product_price = self.PRODUCT_AMOUNTS[vended_product]
             if self.current_amount >= product_price:
                 print('1 {} product has been vended'.format(vended_product), file=self.product_slot)
+                if self.current_amount > product_price:
+                    print('coin (radius: 1mm, mass: 1g) returned', file=self.return_slot)
                 self.current_amount = 0
                 self._print_tmp_msg('THANK YOU')
             else:

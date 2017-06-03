@@ -288,6 +288,36 @@ class VendingMachineVendingProductsTestCase(VendingMachineTestCase):
         self.vm.reset_display()
         self.assertEqual(read_machine_display(self.vm), 'INSERT COIN')
 
+    def test_display_shows_INSERT_COIN_after_vending_is_successful_and_change_is_left(self):
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+
+        self.vm.press_button('A')
+        self.vm.press_button('1')
+        self.assertEqual(read_machine_display(self.vm), 'THANK YOU')
+        self.vm.reset_display()
+        self.assertEqual(read_machine_display(self.vm), 'INSERT COIN')
+
+    def test_display_skips_resetting_if_some_other_message_is_printed_before_reset_display_is_called(self):
+        # TODO
+        pass
+
+
+class VendingMachineProducingChangeTestCase(VendingMachineTestCase):
+    def test_change_is_produced_when_product_value_is_less_then_current_amount(self):
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+
+        self.vm.press_button('A')
+        self.vm.press_button('1')
+        self.assertRegex(read_return_slot(self.vm), '^coin \(radius: \d+mm, mass: \d+g\) returned$')
+
 
 if __name__ == '__main__':
     unittest.main()
