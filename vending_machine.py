@@ -126,6 +126,13 @@ class VendingMachine:
                 print('PRICE {0:.2f}'.format(product_price), file=self.display)
         self.buttons_pressed = ""
 
+    def reset_display(self):
+        """
+        reset_disply resets the display after some temporary message is given. The display then reads either INSERT COIN
+        or current amount is x.xx.
+        """
+        print('current amount is {0:.2f}'.format(self.current_amount), file=self.display)
+
 
 class InvalidArgumentError(ValueError):
     pass

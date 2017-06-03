@@ -258,6 +258,15 @@ class VendingMachineVendingProductsTestCase(VendingMachineTestCase):
         self.vm.press_button('3')
         self.assertEqual(read_machine_display(self.vm), 'PRICE 0.65')
 
+    def test_display_shows_current_amount_after_vending_is_attempted_with_not_enough_money(self):
+        self.vm.insert_coin(QUARTER)
+        self.vm.insert_coin(QUARTER)
+        self.vm.press_button('A')
+        self.vm.press_button('1')
+
+        self.vm.reset_display()
+        self.assertEqual(read_machine_display(self.vm), 'current amount is 0.50')
+
 
 if __name__ == '__main__':
     unittest.main()
